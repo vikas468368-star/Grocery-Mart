@@ -1,0 +1,54 @@
+{
+  "name": "grocery-pos-desktop",
+  "version": "1.0.0",
+  "description": "Cross-platform Electron desktop wrapper for Grocery POS Billing System",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "copy-dist": "node -e \"const fs=require('fs'); if(fs.existsSync('../frontend/dist')){fs.cpSync('../frontend/dist', './dist', {recursive:true}); console.log('Copied frontend/dist to desktop/dist');}\"",
+    "build": "npm run copy-dist && electron-builder --win",
+    "build:dir": "npm run copy-dist && electron-builder --win --dir",
+    "pack": "electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.grocerypos.terminal",
+    "productName": "Grocery POS Retail Terminal",
+    "copyright": "Copyright © 2026 Grocery POS Team",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "assets/**/*",
+      "dist/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Grocery POS Terminal"
+    }
+  },
+  "keywords": [
+    "grocery",
+    "pos",
+    "electron",
+    "billing-system"
+  ],
+  "author": "Grocery POS Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^26.15.3"
+  }
+}

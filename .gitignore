@@ -1,0 +1,15 @@
+
+# Dependencies and generated files
+Grocery POS/node_modules/
+Grocery POS/**/node_modules/
+Grocery POS/.pytest_cache/
+Grocery POS/desktop/dist-electron-scroll-and-contrast/
+Grocery POS/pos_local.db
+
+# Generated files and local data
+Grocery POS/node_modules/
+Grocery POS/**/node_modules/
+Grocery POS/desktop/dist-electron-scroll-and-contrast/
+Grocery POS/pos_local.db
+Grocery POS/**/__pycache__/
+Grocery POS/**/.pytest_cache/

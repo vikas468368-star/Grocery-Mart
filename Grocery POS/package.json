@@ -1,0 +1,35 @@
+{
+  "name": "grocery-pos-monorepo",
+  "version": "1.0.0",
+  "description": "Enterprise Grocery Store POS Billing System - Monorepo",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "desktop"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run dev --prefix frontend",
+    "build:frontend": "npm run build --prefix frontend",
+    "dev:desktop": "npm start --prefix desktop",
+    "build:desktop": "npm run build:frontend && npm run build --prefix desktop",
+    "pack:desktop": "npm run build:frontend && npm run build:dir --prefix desktop",
+    "docker:up": "docker-compose up --build -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "keywords": [
+    "grocery",
+    "pos",
+    "fastapi",
+    "react",
+    "electron",
+    "docker"
+  ],
+  "author": "Grocery POS Team",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-is": "^19.3.1"
+  }
+}
