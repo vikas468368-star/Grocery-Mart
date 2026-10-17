@@ -1,152 +1,167 @@
-# Grocery-Mart | Retail Point of Sale System
+ <div align="center">
 
-<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F172A,35:1D4ED8,70:0891B2,100:10B981&height=220&section=header&text=Grocery%20Mart&fontSize=58&fontColor=FFFFFF&fontAlignY=38&animation=fadeIn&desc=Retail%20POS%20%7C%20Inventory%20%7C%20Billing%20%7C%20Analytics&descSize=16&descAlignY=60&descColor=E2E8F0" width="100%" alt="Grocery Mart animated banner" />
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:0F172A,30:2563EB,65:7C3AED,100:06B6D4&text=Grocery-Mart&fontColor=FFFFFF&fontSize=54&fontAlignY=38&animation=twinkling&desc=Smart%20Retail%20Management%20%7C%20Billing%20%7C%20Inventory&descAlignY=60&descSize=16" width="100%" alt="Grocery-Mart colorful animated banner"/>
-
-<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=20&duration=3000&pause=900&color=38BDF8&center=true&vCenter=true&width=750&lines=Modern+Grocery+Billing+System;Inventory+and+Product+Management;React+%2B+FastAPI+%2B+Electron;Built+for+Modern+Retail+Workflows" alt="Animated project introduction"/>
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=19&duration=3000&pause=900&color=0EA5E9&center=true&vCenter=true&width=700&lines=Modern+Retail+Management+Platform;Simplifying+Billing+and+Inventory+Workflows;React+%7C+FastAPI+%7C+Electron+%7C+Docker;Designed+for+Grocery+Stores+and+Supermarkets" alt="Animated project description" />
 
 <br/>
 
-[![Repository](https://img.shields.io/badge/GitHub-Grocery--Mart-181717?style=for-the-badge&logo=github)](https://github.com/vikas468368-star/Grocery-Mart)
-[![Frontend](https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![Backend](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Desktop](https://img.shields.io/badge/Desktop-Electron-47848F?style=for-the-badge&logo=electron&logoColor=white)](https://www.electronjs.org/)
+<a href="https://github.com/vikas468368-star/Grocery-Mart">
+<img src="https://img.shields.io/badge/Project-Grocery%20Mart-2563EB?style=for-the-badge" alt="Grocery Mart project"/>
+</a>
+<a href="https://github.com/vikas468368-star/Grocery-Mart/issues">
+<img src="https://img.shields.io/badge/Issues-Report%20a%20Bug-DC2626?style=for-the-badge" alt="Report an issue"/>
+</a>
+<a href="https://github.com/vikas468368-star/Grocery-Mart">
+<img src="https://img.shields.io/badge/Status-Under%20Development-F59E0B?style=for-the-badge" alt="Project status"/>
+</a>
 
-**A modern retail management project designed to bring billing, inventory, sales operations, and desktop application support into one organized system.**
+**A modern grocery retail management system built to organize everyday store operations through a unified web, backend, and desktop architecture.**
 
-[Explore the Project](https://github.com/vikas468368-star/Grocery-Mart/tree/main/Grocery%20POS) · [Report an Issue](https://github.com/vikas468368-star/Grocery-Mart/issues) · [Contribute](https://github.com/vikas468368-star/Grocery-Mart/pulls)
+[Explore Repository](https://github.com/vikas468368-star/Grocery-Mart) · [Report an Issue](https://github.com/vikas468368-star/Grocery-Mart/issues) · [View Source Code](https://github.com/vikas468368-star/Grocery-Mart/tree/main/Grocery%20POS)
 
 </div>
 
 ---
 
-## About the Project
+## Overview
 
-**Grocery-Mart** is a grocery store and supermarket Point of Sale (POS) project focused on simplifying retail operations through a structured software architecture.
+**Grocery Mart** is a full-stack Point of Sale (POS) and retail management project designed for grocery stores, retail shops, and supermarkets.
 
-The project separates the user interface, backend API, and desktop application into dedicated components. This structure helps developers maintain the codebase, extend existing functionality, and develop new features more efficiently.
+The project brings essential retail workflows into one application, including billing, product management, inventory-related operations, customer records, supplier management, sales, orders, payments, and reporting.
 
-The source code is located in the `Grocery POS` directory of this repository.
+Its modular architecture combines a React frontend, Python FastAPI backend, and Electron desktop client. The codebase is structured to support maintainable development and future expansion.
 
-### Project Goals
+> **Project status:** Under development and testing. Individual features should be tested before being considered production-ready.
 
-- Simplify checkout and billing workflows.
-- Organize product and inventory management.
-- Support customer, supplier, and sales-related operations.
-- Provide a React-based user interface.
-- Expose backend functionality through a FastAPI application.
-- Support a desktop application through Electron.
-- Provide Docker configuration for containerized development.
+## Key Features
+
+| Module | Purpose |
+|---|---|
+| Point of Sale | Support retail billing and checkout workflows |
+| Product Management | Organize and manage product records |
+| Category Management | Group products into meaningful categories |
+| Customer Management | Maintain customer-related information |
+| Supplier Management | Organize supplier records and operations |
+| Sales and Orders | Provide modules for sales and order workflows |
+| Payments | Handle payment-related API operations |
+| Returns | Provide a dedicated module for return workflows |
+| Authentication | Support application authentication and security |
+| Business Reports | Provide reporting functionality through dedicated API routes |
+| Desktop Application | Offer an Electron-based desktop application structure |
+| Database Migrations | Manage database schema changes with Alembic |
+
+Feature availability and completion may vary as development continues.
 
 ## Technology Stack
 
-| Component | Technology |
+<div align="center">
+
+| Layer | Technologies |
 |---|---|
-| Frontend | React, JavaScript, Vite |
-| Styling | CSS, Tailwind CSS configuration |
+| Frontend | React, JavaScript, Vite, CSS |
 | Backend | Python, FastAPI |
-| API Documentation | FastAPI interactive API documentation |
-| Database Layer | Backend database configuration and SQLAlchemy-related migrations |
-| Database Migrations | Alembic |
-| Desktop Application | Electron, JavaScript |
+| API | REST-style endpoints |
+| Database Layer | SQLAlchemy |
+| Schema Migrations | Alembic |
+| Desktop | Electron, JavaScript |
 | Containerization | Docker, Docker Compose |
-| Package Management | npm, pip |
+| Version Control | Git, GitHub |
 
-## Core Modules
+</div>
 
-The source code is organized around the following application areas.
+## System Architecture
 
-### Point of Sale and Billing
+```mermaid
+flowchart TD
+    U[Store Staff] --> W[React Web Application]
+    U --> D[Electron Desktop Application]
 
-- Billing-related API endpoints.
-- Cart and checkout interface components.
-- Receipt and checkout modal components.
-- Barcode scanner component.
-- Sales and transaction-related workflows.
+    W --> API[FastAPI Backend]
+    D --> API
 
-### Product and Inventory Management
+    API --> AUTH[Authentication and Security]
+    API --> ROUTES[Business API Modules]
 
-- Product and category API modules.
-- Product catalog interface.
-- Inventory management page.
-- Product selection and product details components.
+    ROUTES --> MODELS[SQLAlchemy Models]
+    MODELS --> DB[(Configured Database)]
 
-### Customers and Suppliers
+    MIG[Alembic Migrations] --> DB
 
-- Customer data models and API routes.
-- Supplier data models and API routes.
-- Supplier management interface.
-- Customer-related backend schemas.
-
-### Reports and Administration
-
-- Reports API and reporting interface.
-- Settings page.
-- User and authentication modules.
-- Orders, payments, and returns API modules.
-
-> The availability and completeness of individual features should be verified against the current implementation before using the application in a live retail environment.
-
-## Architecture
-
-```text
-Grocery-Mart
-|
-+-- Grocery POS/
-    |
-    +-- frontend/
-    |   +-- src/
-    |   |   +-- api/
-    |   |   +-- components/
-    |   |   +-- context/
-    |   |   +-- hooks/
-    |   |   +-- pages/
-    |   +-- package.json
-    |
-    +-- backend/
-    |   +-- app/
-    |   |   +-- core/
-    |   |   +-- models/
-    |   |   +-- routers/
-    |   |   +-- schemas/
-    |   +-- alembic/
-    |   +-- requirements.txt
-    |
-    +-- desktop/
-    |   +-- main.js
-    |   +-- preload.js
-    |   +-- package.json
-    |
-    +-- docker-compose.yml
-    +-- package.json
-    +-- README.md
+    style U fill:#0F172A,color:#FFFFFF,stroke:#334155
+    style W fill:#1D4ED8,color:#FFFFFF,stroke:#60A5FA
+    style D fill:#0E7490,color:#FFFFFF,stroke:#22D3EE
+    style API fill:#047857,color:#FFFFFF,stroke:#34D399
+    style DB fill:#7C3AED,color:#FFFFFF,stroke:#A78BFA
 ```
 
-### How the Components Work Together
+### How it works
 
-1. The React frontend provides the user interface.
-2. The frontend API modules communicate with the backend.
-3. FastAPI exposes routes for application operations.
-4. Backend models and database configuration support data management.
+1. Store staff interact with the web interface or desktop client.
+2. The client communicates with the FastAPI backend.
+3. API routers handle requests for the relevant business module.
+4. SQLAlchemy provides the database access layer.
 5. Alembic manages database schema migrations.
-6. Electron provides the desktop application runtime.
-7. Docker configuration supports container-based development.
+
+## Project Structure
+
+```text
+Grocery-Mart/
+├── .gitignore
+├── README.md
+└── Grocery POS/
+    ├── README.md
+    ├── package.json
+    ├── package-lock.json
+    ├── docker-compose.yml
+    │
+    ├── backend/
+    │   ├── .env.example
+    │   ├── Dockerfile
+    │   ├── requirements.txt
+    │   ├── alembic.ini
+    │   ├── alembic/
+    │   └── app/
+    │       ├── main.py
+    │       ├── core/
+    │       ├── models/
+    │       ├── routers/
+    │       ├── schemas/
+    │       └── seeds/
+    │
+    ├── frontend/
+    │   ├── package.json
+    │   ├── index.html
+    │   └── src/
+    │       ├── api/
+    │       ├── assets/
+    │       ├── components/
+    │       ├── context/
+    │       ├── hooks/
+    │       └── pages/
+    │
+    └── desktop/
+        ├── package.json
+        ├── main.js
+        ├── preload.js
+        └── assets/
+```
 
 ## Getting Started
 
-Follow the instructions below to prepare the project for local development.
+Follow these steps to set up the project on your local machine.
 
 ### Prerequisites
 
-Install the following tools before starting:
+Install the following tools:
 
-- [Git](https://git-scm.com/downloads)
-- [Python](https://www.python.org/downloads/)
-- [Node.js and npm](https://nodejs.org/)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) — optional, for container-based workflows
+- Git
+- Python compatible with the backend dependencies
+- Node.js and npm
+- A database supported by the project's configuration
+- Docker Desktop, if you want to use Docker
 
-### 1. Clone the Repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/vikas468368-star/Grocery-Mart.git
@@ -154,13 +169,14 @@ cd Grocery-Mart
 cd "Grocery POS"
 ```
 
-### 2. Configure the Backend
+### 2. Set up the backend
 
 Open a terminal inside the `Grocery POS` directory.
 
 Create a Python virtual environment:
 
-```bash
+```powershell
+cd backend
 python -m venv .venv
 ```
 
@@ -172,154 +188,162 @@ Activate it on Windows PowerShell:
 
 Install the backend dependencies:
 
-```bash
-pip install -r backend/requirements.txt
+```powershell
+python -m pip install -r requirements.txt
 ```
 
-If the backend requires environment variables, create a local configuration file from the provided example:
+Create your local environment configuration:
 
 ```powershell
-Copy-Item backend/.env.example backend/.env
+Copy-Item .env.example .env
 ```
 
-Review the environment variables and configure them for your machine. Do not commit real passwords, API keys, or secret values.
+Edit `.env` and configure the required database connection and application settings. Do not commit real passwords, tokens, or secret keys.
 
-Start the backend from the `Grocery POS` directory:
+Run the database migrations:
 
-```bash
-python -m uvicorn app.main:app --reload --app-dir backend
+```powershell
+alembic upgrade head
 ```
 
-If startup succeeds with the default Uvicorn port, visit:
+Start the backend server:
 
-- API: http://127.0.0.1:8000
-- Interactive API documentation: http://127.0.0.1:8000/docs
+```powershell
+uvicorn app.main:app --reload
+```
 
-Database configuration and migrations may need to be completed before all endpoints can be used.
+When the server starts successfully, the API is typically available at:
 
-### 3. Start the Frontend
+- API base URL: `http://127.0.0.1:8000`
+- Interactive API documentation: `http://127.0.0.1:8000/docs`
+
+These URLs assume the default Uvicorn configuration and that the application starts successfully.
+
+### 3. Set up the frontend
 
 Open a second terminal:
 
-```bash
-cd "Grocery POS/frontend"
+```powershell
+cd "Grocery POS\frontend"
 npm install
-npm run
-```
-
-The last command lists the scripts defined in `package.json`. Run the development script shown there, commonly:
-
-```bash
 npm run dev
 ```
 
-Use the local URL displayed by Vite in the terminal. Ensure the frontend API configuration points to the backend address.
+Open the local URL printed by Vite in your terminal.
 
-### 4. Run the Desktop Application
+Make sure the frontend API configuration points to the running backend.
 
-Open a separate terminal:
+### 4. Set up the desktop application
 
-```bash
-cd "Grocery POS/desktop"
+Open another terminal:
+
+```powershell
+cd "Grocery POS\desktop"
 npm install
 npm run
 ```
 
-Review the available scripts before launching the desktop application or building an installer. The exact command depends on the scripts configured in the desktop package.
+The final command lists the scripts defined in the desktop package. Use the appropriate script listed there to start or build the Electron application.
 
-### 5. Docker
+The desktop application may require the frontend build and backend services to be configured and running.
 
-The project includes a `docker-compose.yml` file. Review its service configuration and required environment variables before starting the containers.
+### 5. Run with Docker
 
-From the `Grocery POS` directory, use:
+Docker Compose configuration is included in the project.
 
-```bash
-docker compose config
-```
+From the `Grocery POS` directory, inspect the Compose file and its environment requirements, then run:
 
-If the configuration validates and the required environment is ready:
-
-```bash
+```powershell
 docker compose up --build
 ```
 
-## Development Guidelines
+The available services, ports, and environment variables depend on the Compose configuration.
 
-To keep the project maintainable:
+## Development Workflow
 
-- Keep frontend components focused on their individual responsibilities.
-- Keep backend routes, models, schemas, and configuration organized.
-- Store secrets in local environment files rather than source control.
-- Exclude build outputs, dependencies, caches, and local database files from Git.
-- Validate database migrations before applying them to important data.
-- Test billing, inventory updates, and payment workflows before releasing changes.
+For a reliable development process:
 
-## Current Project Status
+1. Start the backend and verify that it initializes correctly.
+2. Confirm the database configuration and migrations.
+3. Start the frontend and verify its connection to the API.
+4. Test the business workflows relevant to your changes.
+5. Test the Electron client when modifying desktop-specific functionality.
+6. Review errors and run available tests before committing changes.
 
-**Development status: In progress.**
+## Security and Configuration
 
-The repository contains the frontend, backend, and desktop application source structure. Production readiness, end-to-end integration, automated test coverage, and deployment security should be verified before the software is used by a business.
+Security should be considered throughout development.
+
+- Keep credentials and secret keys in local environment variables.
+- Never commit real `.env` files containing secrets.
+- Validate incoming data on the backend.
+- Apply appropriate authentication and authorization to protected operations.
+- Keep database migrations under version control.
+- Exclude dependency folders, generated builds, and local database files from Git.
+- Test the application's security and data handling before production deployment.
 
 ## Roadmap
 
-Potential areas for continued development include:
+The following are potential development priorities, not claims that every feature is already complete.
 
-- End-to-end testing of the checkout process.
-- Inventory validation and low-stock alerts.
-- Improved reporting and sales summaries.
-- Robust authentication and authorization.
-- Reliable database backup and recovery.
-- Automated tests for critical billing operations.
-- Desktop packaging and release automation.
-- Production deployment documentation.
+- [ ] Verify end-to-end billing and checkout workflows.
+- [ ] Strengthen inventory updates and stock validation.
+- [ ] Improve sales reports and business analytics.
+- [ ] Expand automated backend and frontend tests.
+- [ ] Refine desktop packaging and installation.
+- [ ] Improve deployment documentation and production configuration.
+- [ ] Validate authentication, authorization, and error handling.
+- [ ] Perform end-to-end testing across the web and desktop clients.
 
 ## Contributing
 
-Contributions, suggestions, and bug reports are welcome.
+Contributions, bug reports, and improvement suggestions are welcome.
 
 1. Fork the repository.
-2. Create a feature branch.
+2. Create a feature branch:
 
    ```bash
    git checkout -b feature/your-feature
    ```
 
-3. Make and test your changes.
-4. Commit your work.
+3. Make your changes and test them.
+4. Commit your changes:
 
    ```bash
    git add .
-   git commit -m "Add your feature"
+   git commit -m "Add: describe your change"
    ```
 
-5. Push your branch.
+5. Push your branch:
 
    ```bash
    git push origin feature/your-feature
    ```
 
-6. Open a pull request describing your changes.
+6. Open a pull request explaining the changes and the tests performed.
+
+## Project Status
+
+**Current stage:** Under development and testing.
+
+The repository contains the main frontend, backend, and desktop application structure. Feature completeness, production security, and deployment readiness still need to be verified before use in a live retail environment.
 
 ## License
 
-No license has been specified in this README. Add a `LICENSE` file and update this section when the project's licensing terms have been decided.
-
-## Author
-
-**Vikas Madheshiya**
-
-GitHub: [@vikas468368-star](https://github.com/vikas468368-star)
-
-Project repository: [Grocery-Mart](https://github.com/vikas468368-star/Grocery-Mart)
+A license has not yet been specified in this repository. Add an appropriate `LICENSE` file before defining reuse and distribution permissions.
 
 ---
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:06B6D4,50:2563EB,100:0F172A&height=120&section=footer" width="100%" alt="Colorful gradient footer"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:10B981,50:0891B2,100:1D4ED8&height=120&section=footer" width="100%" alt="Decorative gradient footer"/>
 
-**Grocery-Mart**
+**Grocery Mart**
 
-*Building organized, maintainable retail software.*
+Building a more organized retail management experience.
+
+Developed by **Vikas Madheshiya**
+
+[GitHub Repository](https://github.com/vikas468368-star/Grocery-Mart)
 
 </div>
