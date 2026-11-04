@@ -41,3 +41,21 @@ def create_staff_user(
     db.commit()
     db.refresh(new_user)
     return new_user
+
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+def deactivate_staff_user(
+    user_id: int,
+    current_user: User = Depends(require_owner),
+    db: Session = Depends(get_db)
+):
+    """Deactivate a staff account without deleting its sales history."""
+    staff_user = db.query(User).filter(User.id == user_id).first()
+    if not staff_user:
+        raise HTTPException(status_code=404, detail="Staff member not found.")
+    if staff_user.id == current_user.id:
+        raise HTTPException(status_code=400, detail="You cannot remove your own owner account.")
+    if staff_user.role == UserRole.OWNER:
+        raise HTTPException(status_code=400, detail="Owner accounts cannot be removed from staff management.")
+
+    staff_user.is_active = False
+    db.commit()

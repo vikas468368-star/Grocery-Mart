@@ -14,15 +14,15 @@ import { ShieldAlert, ArrowLeft } from 'lucide-react';
 import './index.css';
 
 function MainAppContent() {
-  const { isAuthenticated, loading, role, isOwner, isManager, getDefaultTabForRole } = useAuth();
+  const { isAuthenticated, loading, role, isOwner, isManager, isTerminalCashier, getDefaultTabForRole } = useAuth();
   const [activeTab, setActiveTab] = useState('pos');
 
   // Set default tab when user logs in or role is available
   useEffect(() => {
     if (isAuthenticated && role) {
-      setActiveTab(getDefaultTabForRole(role));
+      setActiveTab(isTerminalCashier ? 'pos' : getDefaultTabForRole(role));
     }
-  }, [isAuthenticated, role]);
+  }, [isAuthenticated, role, isTerminalCashier, getDefaultTabForRole]);
 
   if (loading) {
     return (
@@ -51,6 +51,7 @@ function MainAppContent() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'dashboard':
+        if (isTerminalCashier) return <POSPage />;
         return <DashboardPage setActiveTab={setActiveTab} />;
 
       case 'pos':
@@ -148,7 +149,7 @@ function MainAppContent() {
         <Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
         {/* Dynamic View Panel with RBAC protection */}
-        <main className="pos-body-content">{renderTabContent()}</main>
+        <main key={activeTab} className="pos-body-content page-transition">{renderTabContent()}</main>
       </div>
     </CartProvider>
   );

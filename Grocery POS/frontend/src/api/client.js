@@ -1,4 +1,12 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+// The Vite dev server talks directly to the local API. The production build is
+// served by Nginx, which proxies /api/ to the backend container, so it must use
+// a same-origin relative URL instead of the browser's localhost.
+const isPackagedElectron = typeof window !== 'undefined' && window.location.protocol === 'file:';
+const API_BASE_URL = import.meta.env.VITE_API_URL || (
+  isPackagedElectron
+    ? 'http://localhost:8001/api/v1'
+    : import.meta.env.DEV ? 'http://localhost:8000/api/v1' : '/api/v1'
+);
 
 // Initial fallback catalog in case backend is offline during early development
 export const MOCK_PRODUCTS = [
@@ -32,7 +40,13 @@ export async function apiFetch(endpoint, options = {}) {
     });
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
-      throw new Error(errData.detail || `HTTP Error ${res.status}`);
+      const serverMessage = errData.message && errData.detail
+        ? `${errData.detail}: ${errData.message}`
+        : errData.message || errData.detail;
+      throw new Error(serverMessage || `HTTP Error ${res.status}`);
+    }
+    if (res.status === 204) {
+      return null;
     }
     return await res.json();
   } catch (error) {

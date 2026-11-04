@@ -85,15 +85,11 @@ export async function getSalePayments(saleId) {
 }
 
 export async function getSalesHistory(search = '', statusFilter = '') {
-  try {
-    const params = new URLSearchParams();
-    if (search) params.append('search', search);
-    if (statusFilter) params.append('status_filter', statusFilter);
-    const queryStr = params.toString() ? `?${params.toString()}` : '';
-    return await apiFetch(`/sales/${queryStr}`);
-  } catch {
-    return [];
-  }
+  const params = new URLSearchParams();
+  if (search) params.append('search', search);
+  if (statusFilter) params.append('status_filter', statusFilter);
+  const queryStr = params.toString() ? `?${params.toString()}` : '';
+  return await apiFetch(`/sales/${queryStr}`);
 }
 
 export async function getSaleDetail(saleId) {

@@ -2,13 +2,24 @@ import { apiFetch, MOCK_PRODUCTS } from './client';
 
 export async function getProducts(search = '', category = '', limit = 700, skip = 0) {
   try {
-    const params = new URLSearchParams();
-    if (search) params.append('search', search);
-    if (category && category !== 'All') params.append('category', category);
-    params.append('limit', limit);
-    params.append('skip', skip);
-    const queryString = params.toString() ? `?${params.toString()}` : '';
-    return await apiFetch(`/products/${queryString}`);
+    // The backend caps each response at 200 records, so fetch subsequent pages
+    // when the inventory screen asks for the complete catalog.
+    const pageSize = Math.min(limit, 200);
+    const allProducts = [];
+
+    for (let offset = skip; allProducts.length < limit; offset += pageSize) {
+      const params = new URLSearchParams();
+      if (search) params.append('search', search);
+      if (category && category !== 'All') params.append('category', category);
+      params.append('limit', pageSize);
+      params.append('skip', offset);
+
+      const page = await apiFetch(`/products/?${params.toString()}`);
+      allProducts.push(...page);
+      if (page.length < pageSize) break;
+    }
+
+    return allProducts.slice(0, limit);
   } catch {
     // Graceful offline mock fallback
     return MOCK_PRODUCTS.filter(p => {

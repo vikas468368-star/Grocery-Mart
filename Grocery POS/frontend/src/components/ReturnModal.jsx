@@ -11,10 +11,8 @@ const RETURN_REASONS = [
 ];
 
 export default function ReturnModal({ sale, isOpen, onClose, onSuccess }) {
-  if (!isOpen || !sale) return null;
-
   const [selectedItems, setSelectedItems] = useState({});
-  const [refundMethod, setRefundMethod] = useState(sale.payment_method || 'CASH');
+  const [refundMethod, setRefundMethod] = useState(sale?.payment_method || 'CASH');
   const [commonReason, setCommonReason] = useState(RETURN_REASONS[0]);
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,7 +21,7 @@ export default function ReturnModal({ sale, isOpen, onClose, onSuccess }) {
   // Initialize selectable items
   useEffect(() => {
     const initial = {};
-    (sale.items || []).forEach((item) => {
+    (sale?.items || []).forEach((item) => {
       const alreadyReturned = item.returned_quantity || 0;
       const remaining = Math.max(0, item.quantity - alreadyReturned);
       if (remaining > 0) {
@@ -85,6 +83,8 @@ export default function ReturnModal({ sale, isOpen, onClose, onSuccess }) {
     (sum, it) => sum + (it.unit_price * it.quantity),
     0
   );
+
+  if (!isOpen || !sale) return null;
 
   const handleSubmitReturn = async () => {
     setErrorMsg('');
@@ -356,7 +356,7 @@ export default function ReturnModal({ sale, isOpen, onClose, onSuccess }) {
           <button
             className="btn-primary"
             onClick={handleSubmitReturn}
-            disabled={isSubmitting || activeReturnList.length === 0}
+            disabled={isSubmitting}
             style={{
               background: 'linear-gradient(135deg, #f59e0b, #d97706)',
               padding: '10px 20px',

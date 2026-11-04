@@ -3,6 +3,7 @@ from .user import User, UserRole
 from .category import Category
 from .supplier import Supplier
 from .product import Product
+from .order import Order, OrderItem
 from .purchase_order import PurchaseOrder, PurchaseOrderItem, PurchaseOrderStatus
 from .sale import Sale, SaleItem, SaleStatus, SaleReturn, ReturnItem
 from .payment import Payment, PaymentMethod, PaymentStatus
@@ -27,4 +28,6 @@ __all__ = [
     "PaymentMethod",
     "PaymentStatus",
     "Customer",
+    "Order",
+    "OrderItem",
 ]

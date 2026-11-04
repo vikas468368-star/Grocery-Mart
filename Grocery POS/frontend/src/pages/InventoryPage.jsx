@@ -52,6 +52,7 @@ export default function InventoryPage() {
   const loadData = async () => {
     setLoading(true);
     try {
+      // Fetch the complete catalog; productsApi paginates in 200-record requests.
       const [prods, cats] = await Promise.all([getProducts('', 'All', 1000), getCategories()]);
       setProducts(prods || []);
       setCategories(cats || []);
@@ -129,11 +130,46 @@ export default function InventoryPage() {
   const lowStockItems = products.filter((p) => (p.stock_quantity || 0) <= (p.min_stock_alert || 15));
   const outOfStockItems = products.filter((p) => (p.stock_quantity || 0) === 0);
 
+  const showRetailValuation = () => {
+    setSearch('');
+    setSelectedCategory('All');
+    setStockFilter('all');
+    setCurrentPage(1);
+    requestAnimationFrame(() => {
+      document.querySelector('.inventory-table-container')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+  };
+
+  const showCatalogProducts = () => {
+    setSearch('');
+    setSelectedCategory('All');
+    setStockFilter('all');
+    setCurrentPage(1);
+    requestAnimationFrame(() => {
+      document.querySelector('.inventory-table-container')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+  };
+
   return (
     <div className="inventory-page-container">
       {/* Top Stat Cards */}
       <div className="inventory-stats-grid">
-        <div className="stat-card">
+        <div
+          className="stat-card cursor-pointer"
+          onClick={showCatalogProducts}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') showCatalogProducts();
+          }}
+          role="button"
+          tabIndex={0}
+          title="Click to view the complete product catalog"
+        >
           <div className="stat-icon-wrapper blue">
             <Package size={22} />
           </div>
@@ -171,7 +207,16 @@ export default function InventoryPage() {
           </div>
         </div>
 
-        <div className="stat-card">
+        <div
+          className="stat-card cursor-pointer"
+          onClick={showRetailValuation}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') showRetailValuation();
+          }}
+          role="button"
+          tabIndex={0}
+          title="Click to view the full catalog used for retail valuation"
+        >
           <div className="stat-icon-wrapper green">
             <DollarSign size={22} />
           </div>

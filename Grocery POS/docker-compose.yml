@@ -36,7 +36,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgrespassword
       POSTGRES_DB: grocery_pos
-      SECRET_KEY: "pos-grocery-enterprise-secure-jwt-token-key-2026"
+      # Override SECRET_KEY in a .env file for anything beyond local development.
+      # The previous value is intentionally rejected by the backend configuration.
+      SECRET_KEY: "${SECRET_KEY:-local-development-secret-change-me-2026-0123456789}"
       DEBUG: "False"
     volumes:
       - ./backend:/app

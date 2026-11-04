@@ -51,3 +51,9 @@ export async function createStaffUser(userData) {
     body: JSON.stringify(userData),
   });
 }
+
+export async function removeStaffUser(userId) {
+  return await apiFetch(`/users/${userId}`, {
+    method: 'DELETE',
+  });
+}

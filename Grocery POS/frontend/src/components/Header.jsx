@@ -18,7 +18,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 
 export default function Header({ activeTab, setActiveTab }) {
-  const { user, role, isOwner, isManager, logout } = useAuth();
+  const { user, role, isOwner, isManager, isTerminalCashier, logout } = useAuth();
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const [isElectron, setIsElectron] = useState(false);
 
@@ -53,25 +53,26 @@ export default function Header({ activeTab, setActiveTab }) {
   };
 
   return (
-    <header className="pos-header">
+    <header className={`pos-header ${role === 'Owner' ? 'owner-header' : ''}`}>
       <div className="pos-header-left">
         <div className="pos-brand">
           <div className="brand-logo">🛒</div>
-          <div>
+          <div className="brand-copy">
             <h1 className="brand-title">GROCERY POS</h1>
             <span className="brand-subtitle">Retail Enterprise Billing System</span>
           </div>
         </div>
 
         <nav className="pos-nav">
-          {/* Main Analytics Dashboard - Visible to All */}
-          <button
-            className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
-            onClick={() => setActiveTab('dashboard')}
-          >
-            <LayoutDashboard size={18} />
-            <span>Dashboard</span>
-          </button>
+          {!isTerminalCashier && (
+            <button
+              className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
+              onClick={() => setActiveTab('dashboard')}
+            >
+              <LayoutDashboard size={18} />
+              <span>Dashboard</span>
+            </button>
+          )}
 
           {/* Billing Terminal - Visible to Cashier, Manager, Owner */}
           <button
@@ -104,7 +105,7 @@ export default function Header({ activeTab, setActiveTab }) {
             </button>
           )}
 
-          {/* Sales History & Returns - Visible to All */}
+          {/* Sales History & Returns - Available to Cashier for returns/refunds */}
           <button
             className={`nav-btn ${activeTab === 'transactions' ? 'active' : ''}`}
             onClick={() => setActiveTab('transactions')}

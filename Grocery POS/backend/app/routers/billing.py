@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.security import generate_invoice_number
-from app.core.auth import get_optional_user
+from app.core.auth import require_cashier
 from app.models.product import Product
 from app.models.sale import Sale, SaleItem, SaleStatus
 from app.models.payment import Payment, PaymentMethod, PaymentStatus
@@ -81,7 +81,10 @@ class GeneratedBillResponse(BaseModel):
 # --- Endpoints ---
 
 @router.post("/calculate", response_model=BillCalculationResponse)
-def calculate_bill(request: BillCalculationRequest):
+def calculate_bill(
+    request: BillCalculationRequest,
+    current_user: User = Depends(require_cashier)
+):
     """Real-time calculation engine for subtotal, configurable taxes, discounts, and item summary."""
     subtotal = 0.0
     tax_total = 0.0
@@ -112,7 +115,7 @@ def calculate_bill(request: BillCalculationRequest):
 @router.post("/checkout", response_model=GeneratedBillResponse, status_code=status.HTTP_201_CREATED)
 def generate_bill_and_checkout(
     bill_in: GenerateBillRequest,
-    current_user: Optional[User] = Depends(get_optional_user),
+    current_user: User = Depends(require_cashier),
     db: Session = Depends(get_db)
 ):
     """Core Billing/Checkout Engine.

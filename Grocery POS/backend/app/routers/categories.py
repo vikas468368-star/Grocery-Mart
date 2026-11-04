@@ -2,7 +2,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
-from app.core.auth import require_manager
+from app.core.auth import require_manager, require_cashier
 from app.models.category import Category
 from app.models.user import User
 from pydantic import BaseModel, Field
@@ -53,12 +53,19 @@ class CategoryResponse(CategoryBase):
         from_attributes = True
 
 @router.get("/", response_model=List[CategoryResponse])
-def get_categories(db: Session = Depends(get_db)):
+def get_categories(
+    current_user: User = Depends(require_cashier),
+    db: Session = Depends(get_db)
+):
     """Retrieve all grocery departments and categories."""
     return db.query(Category).filter(Category.is_active == True).order_by(Category.name.asc()).all()
 
 @router.get("/{category_id}", response_model=CategoryResponse)
-def get_category(category_id: int, db: Session = Depends(get_db)):
+def get_category(
+    category_id: int,
+    current_user: User = Depends(require_cashier),
+    db: Session = Depends(get_db)
+):
     """Retrieve details for a single category."""
     cat = db.query(Category).filter(Category.id == category_id).first()
     if not cat:

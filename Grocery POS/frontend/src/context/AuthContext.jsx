@@ -62,6 +62,7 @@ export function AuthProvider({ children }) {
   const isOwner = role === 'Owner';
   const isManager = role === 'Manager' || isOwner;
   const isCashier = role === 'Cashier' || isManager;
+  const isTerminalCashier = role === 'Cashier';
 
   // Determine standard landing page / dashboard based on role
   const getDefaultTabForRole = (userRole) => {
@@ -82,6 +83,7 @@ export function AuthProvider({ children }) {
     isOwner,
     isManager,
     isCashier,
+    isTerminalCashier,
     getDefaultTabForRole,
   };
 

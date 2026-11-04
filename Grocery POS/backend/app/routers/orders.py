@@ -7,16 +7,27 @@ from app.models.order import Order, OrderItem
 from app.models.product import Product
 from app.models.customer import Customer
 from app.schemas.order import OrderCreate, OrderResponse
+from app.core.auth import require_cashier
+from app.models.user import User
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
 @router.get("/", response_model=List[OrderResponse])
-def get_orders(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+def get_orders(
+    skip: int = 0,
+    limit: int = 50,
+    current_user: User = Depends(require_cashier),
+    db: Session = Depends(get_db)
+):
     """Retrieve history of POS transactions and receipts."""
     return db.query(Order).order_by(Order.created_at.desc()).offset(skip).limit(limit).all()
 
 @router.get("/{order_id}", response_model=OrderResponse)
-def get_order(order_id: int, db: Session = Depends(get_db)):
+def get_order(
+    order_id: int,
+    current_user: User = Depends(require_cashier),
+    db: Session = Depends(get_db)
+):
     """Retrieve specific order invoice details."""
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
@@ -24,7 +35,11 @@ def get_order(order_id: int, db: Session = Depends(get_db)):
     return order
 
 @router.post("/checkout", response_model=OrderResponse, status_code=201)
-def checkout(order_in: OrderCreate, db: Session = Depends(get_db)):
+def checkout(
+    order_in: OrderCreate,
+    current_user: User = Depends(require_cashier),
+    db: Session = Depends(get_db)
+):
     """Process POS checkout transaction, decrement inventory stock, and generate receipt invoice."""
     if not order_in.items:
         raise HTTPException(status_code=400, detail="Cannot checkout an empty cart")

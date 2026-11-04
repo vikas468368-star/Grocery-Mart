@@ -1,7 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
-from app.core.security import verify_password, create_access_token
+from app.core.security import (
+    verify_password,
+    get_password_hash,
+    needs_rehash,
+    create_access_token,
+)
 from app.core.auth import get_current_user
 from app.models.user import User, UserRole
 from app.schemas.user import UserLogin, TokenResponse, UserResponse
@@ -25,6 +30,10 @@ def login(credentials: UserLogin, db: Session = Depends(get_db)):
             status_code=status.HTTP_403_FORBIDDEN,
             detail="User account is deactivated. Contact store owner.",
         )
+    # Upgrade legacy SHA-256 hashes to Argon2id after successful login.
+    if needs_rehash(user.hashed_password):
+        user.hashed_password = get_password_hash(credentials.password)
+        db.commit()
     
     role_str = user.role.value if hasattr(user.role, 'value') else str(user.role)
     token_data = {

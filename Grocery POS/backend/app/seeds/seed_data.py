@@ -31,6 +31,33 @@ from app.models.purchase_order import PurchaseOrder, PurchaseOrderItem
 from app.models.customer import Customer
 from app.core.security import hash_secret
 
+
+def apply_demo_low_stock(db):
+    """Keep a small, deterministic set of products in low-stock status."""
+    low_stock_levels = {
+        "Kesar Mango Gujarat": 3.0,
+        "Hybrid Salad Tomatoes 1kg": 4.0,
+        "Amul Gold Homogenised Milk 1L Tetra": 2.0,
+        "Fortune Sunlite Refined Sunflower Oil 1L Pouch": 5.0,
+        "Fresh Coriander Bunch 100g": 1.0,
+        "Fresh Mint Leaves (Pudina) 100g": 2.0,
+        "Amul Taaza Toned Milk 1L Pouch": 3.0,
+        "Cavendish Banana Premium": 4.0,
+    }
+
+    updated = 0
+    for product_name, quantity in low_stock_levels.items():
+        product = db.query(Product).filter(Product.name == product_name).first()
+        if product:
+            product.stock_quantity = quantity
+            product.min_stock_alert = 10.0
+            updated += 1
+
+    if updated:
+        db.commit()
+        print(f"[OK] Low-stock demo inventory updated: {updated} products.")
+
+
 def seed_database():
     print("=" * 65)
     print("[POS SEED] Starting Grocery POS Database Seeding (500+ Items)...")
@@ -126,6 +153,7 @@ def seed_database():
         # 4. Seed 500+ Grocery Products
         print("\n[4/4] Generating 500+ Grocery Products...")
         existing_barcodes = {p.barcode for p in db.query(Product.barcode).all()}
+        existing_skus = {p.sku for p in db.query(Product.sku).all() if p.sku}
 
         catalog_raw = []
 
@@ -845,11 +873,11 @@ def seed_database():
                 name, price, cost, unit, tax_rate, shelf_days = item
                 barcode_str = str(barcode_counter)
                 barcode_counter += 1
+                sku_str = f"{sku_prefix}-{idx+1:03d}"
 
-                if barcode_str in existing_barcodes:
+                if barcode_str in existing_barcodes or sku_str in existing_skus:
                     continue
 
-                sku_str = f"{sku_prefix}-{idx+1:03d}"
                 exp_date = today + timedelta(days=shelf_days)
                 stock_amt = round(random.uniform(25.0, 180.0), 1 if unit in ['kg', 'L'] else 0)
 
@@ -875,6 +903,8 @@ def seed_database():
         if products_to_add:
             db.bulk_save_objects(products_to_add)
             db.commit()
+
+        apply_demo_low_stock(db)
 
         total_products_count = db.query(Product).count()
         print(f"[OK] Products generated: Added {len(products_to_add)} products.")

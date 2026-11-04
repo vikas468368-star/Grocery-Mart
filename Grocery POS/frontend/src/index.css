@@ -59,6 +59,99 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Motion system: subtle, fast transitions suited to a retail terminal. */
+@keyframes pos-page-enter {
+  from { opacity: 0; transform: translateY(10px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pos-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pos-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pos-pop-in {
+  0% { opacity: 0; transform: scale(0.94); }
+  70% { transform: scale(1.015); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pos-pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 rgba(16, 185, 129, 0); }
+  50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
+}
+
+.page-transition {
+  animation: pos-page-enter 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: opacity, transform;
+}
+
+.pos-header { animation: pos-fade-in 420ms ease-out both; }
+.pos-brand, .pos-nav, .pos-header-right { animation: pos-fade-up 360ms ease-out both; }
+.pos-nav { animation-delay: 60ms; }
+.pos-header-right { animation-delay: 110ms; }
+
+button, input, select, textarea, .cashier-pill, .status-badge {
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease,
+    border-color 180ms ease, color 180ms ease, opacity 180ms ease;
+}
+
+button:not(:disabled):hover, .nav-btn:hover, .cashier-pill:hover, .status-badge:hover {
+  transform: translateY(-2px);
+}
+
+button:not(:disabled):active, .nav-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+button:disabled { cursor: not-allowed; opacity: 0.58; }
+
+.modal-backdrop { animation: pos-fade-in 180ms ease-out both; }
+.modal-card, .checkout-modal, .return-modal {
+  animation: pos-pop-in 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.app-splash-screen { animation: pos-fade-in 300ms ease-out both; }
+
+.spinner-large, .loading-spinner, .spinner {
+  animation: spin 900ms linear infinite, pos-pulse-glow 1800ms ease-in-out infinite;
+}
+
+.pos-body-content table tbody tr, .pos-body-content .product-card,
+.pos-body-content .stat-card, .pos-body-content .metric-card,
+.pos-body-content .dashboard-card {
+  animation: pos-fade-up 320ms ease-out both;
+}
+
+.pos-body-content table tbody tr:nth-child(2n), .pos-body-content .product-card:nth-child(2n),
+.pos-body-content .stat-card:nth-child(2n), .pos-body-content .metric-card:nth-child(2n) {
+  animation-delay: 35ms;
+}
+
+.pos-body-content table tbody tr:nth-child(3n), .pos-body-content .product-card:nth-child(3n),
+.pos-body-content .stat-card:nth-child(3n), .pos-body-content .metric-card:nth-child(3n) {
+  animation-delay: 70ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
+
 /* App container */
 .app-container {
   display: flex;
@@ -75,7 +168,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 18px;
+  gap: 18px;
   z-index: 20;
   flex-shrink: 0;
 }
@@ -83,20 +177,25 @@ body {
 .pos-header-left {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 20px;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .pos-brand {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 0 0 auto;
+  padding-right: 16px;
+  border-right: 1px solid rgba(148, 163, 184, 0.18);
 }
 
 .brand-logo {
   font-size: 26px;
   background: var(--accent-emerald-soft);
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
@@ -106,7 +205,7 @@ body {
 
 .brand-title {
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.5px;
   color: #fff;
@@ -114,7 +213,9 @@ body {
 }
 
 .brand-subtitle {
-  font-size: 11px;
+  display: block;
+  max-width: 150px;
+  font-size: 9px;
   color: var(--text-muted);
   letter-spacing: 0.3px;
   text-transform: uppercase;
@@ -123,19 +224,24 @@ body {
 .pos-nav {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 3px;
+  min-width: 0;
+  padding: 3px;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.36);
 }
 
 .nav-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: transparent;
   color: var(--text-muted);
   border: 1px solid transparent;
-  padding: 8px 14px;
+  padding: 8px 9px;
   border-radius: var(--radius-md);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -156,14 +262,16 @@ body {
 .pos-header-right {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding-left: 6px;
 }
 
 .status-badge {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
+  padding: 6px 9px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
@@ -509,6 +617,45 @@ body {
   transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   user-select: none;
 }
+
+.item-image {
+  display: grid;
+  place-items: center;
+  min-height: 92px;
+  margin: -2px -2px 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+  box-shadow: inset 0 -18px 32px rgba(15, 23, 42, 0.08);
+}
+
+.item-image span {
+  font-size: 3.6rem;
+  line-height: 1;
+  filter: drop-shadow(0 5px 4px rgba(15, 23, 42, 0.16));
+  transition: transform 180ms ease;
+}
+
+.item-image img {
+  width: 100%;
+  height: 92px;
+  object-fit: cover;
+  display: block;
+  transition: transform 180ms ease;
+}
+
+.product-card:hover .item-image span,
+.product-card:hover .item-image img { transform: scale(1.06); }
+.item-image-fruit { background: linear-gradient(135deg, #dcfce7, #fef3c7); }
+.item-image-vegetable { background: linear-gradient(135deg, #dcfce7, #d1fae5); }
+.item-image-dairy { background: linear-gradient(135deg, #eff6ff, #f0f9ff); }
+.item-image-bakery { background: linear-gradient(135deg, #fef3c7, #ffedd5); }
+.item-image-grain, .item-image-pulses { background: linear-gradient(135deg, #fef3c7, #ecfccb); }
+.item-image-oil { background: linear-gradient(135deg, #fef9c3, #ffedd5); }
+.item-image-beverage { background: linear-gradient(135deg, #dbeafe, #ede9fe); }
+.item-image-spice { background: linear-gradient(135deg, #fee2e2, #ffedd5); }
+.item-image-snack { background: linear-gradient(135deg, #fce7f3, #fef3c7); }
+.item-image-household, .item-image-care { background: linear-gradient(135deg, #e0e7ff, #cffafe); }
 
 .product-card:hover {
   transform: translateY(-2px);
@@ -1895,7 +2042,7 @@ body {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 30px;
-  padding: 4px 12px 4px 6px;
+  padding: 4px 9px 4px 5px;
 }
 
 .staff-avatar-mini {
@@ -1948,7 +2095,7 @@ body {
   background: transparent;
   border: 1px solid rgba(239, 68, 68, 0.3);
   color: #f87171;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
@@ -1962,6 +2109,52 @@ body {
 .logout-header-btn:hover {
   background: rgba(239, 68, 68, 0.15);
   border-color: #ef4444;
+}
+
+/* Owner accounts expose every navigation section, so use a dedicated second row. */
+.owner-header {
+  height: auto;
+  min-height: 108px;
+  flex-wrap: wrap;
+  align-content: center;
+  row-gap: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.owner-header .pos-header-left {
+  display: contents;
+}
+
+.owner-header .pos-brand {
+  order: 1;
+}
+
+.owner-header .pos-header-right {
+  order: 2;
+  margin-left: auto;
+}
+
+.owner-header .pos-nav {
+  order: 3;
+  flex: 1 0 100%;
+  justify-content: center;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+@media (max-width: 900px) {
+  .owner-header {
+    min-height: 142px;
+  }
+
+  .owner-header .pos-header-right {
+    max-width: 100%;
+  }
+
+  .owner-header .pos-nav {
+    justify-content: flex-start;
+  }
 }
 
 .owner-nav-highlight {
@@ -2406,6 +2599,26 @@ body {
   color-scheme: light;
 }
 
+/* New Staff Member form uses dark text for clear entry and selection. */
+.staff-modal-card .form-field input,
+.staff-modal-card .form-field select,
+.staff-modal-card .form-field textarea {
+  background: #fff;
+  color: #111827;
+  color-scheme: light;
+}
+
+.staff-modal-card .form-field input::placeholder,
+.staff-modal-card .form-field textarea::placeholder {
+  color: #111827;
+  opacity: 0.7;
+}
+
+.staff-modal-card .form-field select option {
+  background: #fff;
+  color: #111827;
+}
+
 .form-section-card {
   background: rgba(18, 26, 47, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -2567,6 +2780,33 @@ body {
   color: #cbd5e1;
 }
 
+.remove-staff-btn {
+  margin-top: 2px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 10px;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  border-radius: 8px;
+  background: rgba(127, 29, 29, 0.2);
+  color: #fca5a5;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.remove-staff-btn:hover:not(:disabled) {
+  background: rgba(185, 28, 28, 0.35);
+  color: #fecaca;
+}
+
+.remove-staff-btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
 /* ==========================================================================
    Phase 5: Product Catalog, Inventory Management & Suppliers Styles
    ========================================================================== */
@@ -2586,6 +2826,9 @@ body {
   padding: 8px 12px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
+  background: #fff;
+  color: #111827;
+  color-scheme: light;
   font: inherit;
   font-size: 13px;
 }
@@ -3228,6 +3471,27 @@ body {
 /* PO Modal Form */
 .po-modal-dialog {
   max-width: 800px;
+}
+
+/* Keep purchase-order form controls readable on the light input surfaces. */
+.po-modal-dialog .form-field input,
+.po-modal-dialog .form-field select,
+.po-modal-dialog .po-line-row input,
+.po-modal-dialog .po-line-row select {
+  background: #fff;
+  color: #111827;
+  color-scheme: light;
+}
+
+.po-modal-dialog .form-field select option,
+.po-modal-dialog .po-line-row select option {
+  background: #fff;
+  color: #111827;
+}
+
+.po-modal-dialog .form-field input::placeholder {
+  color: #6b7280;
+  opacity: 1;
 }
 
 .po-lines-section {

@@ -12,8 +12,9 @@ import {
   CheckCircle,
   X,
   UserCheck,
+  Trash2,
 } from 'lucide-react';
-import { getStoreSettings, updateStoreSettings, getUsersList, createStaffUser } from '../api/authApi';
+import { getStoreSettings, updateStoreSettings, getUsersList, createStaffUser, removeStaffUser } from '../api/authApi';
 import { useAuth } from '../context/AuthContext';
 
 export default function SettingsPage() {
@@ -38,6 +39,7 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [removingUserId, setRemovingUserId] = useState(null);
   const [newUserForm, setNewUserForm] = useState({
     username: '',
     full_name: '',
@@ -94,6 +96,23 @@ export default function SettingsPage() {
       loadSettingsAndUsers();
     } catch (err) {
       alert(`Failed to register staff: ${err.message}`);
+    }
+  };
+
+  const handleRemoveStaff = async (staffUser) => {
+    const confirmed = window.confirm(
+      `Remove ${staffUser.full_name} (@${staffUser.username})? They will no longer be able to sign in, and their sales history will be preserved.`
+    );
+    if (!confirmed) return;
+
+    setRemovingUserId(staffUser.id);
+    try {
+      await removeStaffUser(staffUser.id);
+      setStaffUsers((currentUsers) => currentUsers.filter((item) => item.id !== staffUser.id));
+    } catch (err) {
+      alert(`Failed to remove staff member: ${err.message}`);
+    } finally {
+      setRemovingUserId(null);
     }
   };
 
@@ -310,6 +329,18 @@ export default function SettingsPage() {
                       </span>
                     </div>
                   </div>
+
+                  {u.id !== user?.id && u.role !== 'Owner' && (
+                    <button
+                      type="button"
+                      className="remove-staff-btn"
+                      onClick={() => handleRemoveStaff(u)}
+                      disabled={removingUserId === u.id}
+                    >
+                      <Trash2 size={14} />
+                      <span>{removingUserId === u.id ? 'Removing...' : 'Remove Staff Member'}</span>
+                    </button>
+                  )}
                 </div>
               );
             })}
@@ -320,7 +351,7 @@ export default function SettingsPage() {
       {/* Add Staff Modal */}
       {showAddUserModal && (
         <div className="modal-backdrop">
-          <div className="modal-card">
+          <div className="modal-card staff-modal-card">
             <div className="modal-header">
               <h3>Register New Staff Member</h3>
               <button className="modal-close-btn" onClick={() => setShowAddUserModal(false)}>

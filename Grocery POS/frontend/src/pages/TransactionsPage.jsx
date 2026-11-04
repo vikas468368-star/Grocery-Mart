@@ -23,6 +23,7 @@ export default function TransactionsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
   const [selectedSaleForReturn, setSelectedSaleForReturn] = useState(null);
   const [returnSuccessToast, setReturnSuccessToast] = useState(null);
 
@@ -34,11 +35,13 @@ export default function TransactionsPage() {
 
   const loadSales = async () => {
     setLoading(true);
+    setLoadError('');
     try {
       const data = await getSalesHistory(search, statusFilter);
       setSales(data || []);
-    } catch {
+    } catch (err) {
       setSales([]);
+      setLoadError(err.message || 'Unable to load sales history.');
     } finally {
       setLoading(false);
     }
@@ -159,6 +162,13 @@ export default function TransactionsPage() {
 
       {/* Main Sales History Table Card */}
       <div className="inventory-table-card">
+        {loadError && (
+          <div className="checkout-error-banner" role="alert" style={{ margin: '14px 18px 0' }}>
+            <AlertCircle size={18} />
+            <span>Sales history failed to load: {loadError}</span>
+            <button className="btn-secondary" onClick={loadSales}>Retry</button>
+          </div>
+        )}
         <div className="inventory-toolbar">
           <form onSubmit={handleSearchSubmit} className="search-box">
             <Search size={18} className="search-icon" />

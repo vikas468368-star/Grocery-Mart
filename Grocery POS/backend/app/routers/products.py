@@ -2,7 +2,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, joinedload
 from app.core.database import get_db
-from app.core.auth import require_manager
+from app.core.auth import require_manager, require_cashier
 from app.models.product import Product
 from app.models.category import Category
 from app.models.user import User
@@ -40,10 +40,15 @@ def get_products(
     category: Optional[str] = Query(None, description="Filter by category name"),
     category_id: Optional[int] = Query(None, description="Filter by category ID"),
     skip: int = 0,
-    limit: int = 700,
+    limit: int = Query(100, ge=1, le=200),
     db: Session = Depends(get_db)
 ):
-    """Retrieve all grocery products with optional search, category filters, and expiry tracking."""
+    """Retrieve the catalog for the POS and inventory screens.
+
+    Catalog reads are public so the packaged Electron renderer can load the
+    inventory before its file:// storage has a browser login token. Mutations
+    remain restricted to managers and owners below.
+    """
     query = db.query(Product).options(joinedload(Product.category)).filter(Product.is_active == True)
 
     if search:
@@ -61,7 +66,11 @@ def get_products(
     return [_format_product(p) for p in products]
 
 @router.get("/barcode/{barcode}", response_model=ProductResponse)
-def get_product_by_barcode(barcode: str, db: Session = Depends(get_db)):
+def get_product_by_barcode(
+    barcode: str,
+    current_user: User = Depends(require_cashier),
+    db: Session = Depends(get_db)
+):
     """Instant lookup by barcode scanner gun or manual entry."""
     product = db.query(Product).options(joinedload(Product.category)).filter(Product.barcode == barcode, Product.is_active == True).first()
     if not product:
@@ -71,6 +80,7 @@ def get_product_by_barcode(barcode: str, db: Session = Depends(get_db)):
 @router.get("/low-stock", response_model=List[ProductResponse])
 def get_low_stock_products(
     threshold: Optional[float] = Query(None, description="Optional custom stock threshold. If omitted, uses each product's min_stock_alert."),
+    current_user: User = Depends(require_manager),
     db: Session = Depends(get_db)
 ):
     """Retrieve products running low on stock (stock <= min_stock_alert or custom threshold)."""
@@ -84,7 +94,11 @@ def get_low_stock_products(
     return [_format_product(p) for p in products]
 
 @router.get("/{product_id}", response_model=ProductResponse)
-def get_product(product_id: int, db: Session = Depends(get_db)):
+def get_product(
+    product_id: int,
+    current_user: User = Depends(require_cashier),
+    db: Session = Depends(get_db)
+):
     """Get product details by ID."""
     product = db.query(Product).options(joinedload(Product.category)).filter(Product.id == product_id).first()
     if not product:

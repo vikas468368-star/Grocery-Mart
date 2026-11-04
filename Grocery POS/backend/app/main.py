@@ -11,6 +11,16 @@ Base.metadata.create_all(bind=engine)
 try:
     from sqlalchemy import text
     with engine.connect() as conn:
+        # Keep databases created by the original Alembic migration compatible
+        # with the current Sale model. ADD COLUMN is intentionally guarded by
+        # the exception handler so fresh and already-updated databases are safe.
+        conn.execute(text("ALTER TABLE sales ADD COLUMN customer_id INTEGER"))
+        conn.commit()
+except Exception:
+    pass
+try:
+    from sqlalchemy import text
+    with engine.connect() as conn:
         conn.execute(text("ALTER TABLE sale_items ADD COLUMN returned_quantity FLOAT DEFAULT 0.0"))
         conn.commit()
 except Exception:
@@ -86,6 +96,12 @@ async def global_unhandled_exception_handler(request, exc: Exception):
 def verify_and_seed_catalog():
     """Ensure database has the 500+ grocery catalog records and all table columns on launch."""
     from sqlalchemy import text
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("ALTER TABLE sales ADD COLUMN customer_id INTEGER"))
+            conn.commit()
+    except Exception:
+        pass
     try:
         with engine.connect() as conn:
             conn.execute(text("ALTER TABLE sale_items ADD COLUMN returned_quantity FLOAT DEFAULT 0.0"))

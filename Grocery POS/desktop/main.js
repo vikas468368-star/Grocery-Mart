@@ -32,21 +32,42 @@ function createWindow() {
   });
 
   // Check whether we are in dev mode or production build
-  const devServerUrl = process.env.VITE_DEV_SERVER_URL || 'http://127.0.0.1:5173';
-  const isDev = process.env.NODE_ENV === 'development' || (!app.isPackaged && !process.env.ELECTRON_FORCE_PACKAGED);
+  const devServerUrls = [
+    process.env.VITE_DEV_SERVER_URL,
+    'http://127.0.0.1:5175',
+    'http://127.0.0.1:5174',
+    'http://127.0.0.1:5173',
+  ].filter((url, index, urls) => url && urls.indexOf(url) === index);
+  // npm start should use the packaged frontend, so Electron does not depend on
+  // an arbitrary Vite port. Opt into Vite explicitly when developing Electron.
+  const isDev = process.env.ELECTRON_DEV_SERVER === 'true';
 
   if (isDev) {
-    mainWindow.loadURL(devServerUrl).catch(() => {
-      console.log(`Dev server at ${devServerUrl} not reachable, falling back to local HTML.`);
+    const loadDevServer = async () => {
+      for (const devServerUrl of devServerUrls) {
+        try {
+          await mainWindow.loadURL(devServerUrl);
+          console.log(`[Desktop POS] Loaded frontend from ${devServerUrl}`);
+          return;
+        } catch {
+          console.log(`[Desktop POS] Dev server at ${devServerUrl} not reachable.`);
+        }
+      }
+
+      console.log('[Desktop POS] No dev server reachable, falling back to local HTML.');
       const staticHtml = getProductionHtmlPath();
       if (fs.existsSync(staticHtml)) {
         mainWindow.loadFile(staticHtml);
       }
-    });
+    };
+    loadDevServer();
   } else {
-    mainWindow.loadFile(getProductionHtmlPath());
+    mainWindow.loadFile(getProductionHtmlPath()).catch((error) => {
+      console.error('[Desktop POS] Failed to load packaged frontend:', error);
+    });
   }
 
+  mainWindow.webContents.once('did-finish-load', () => mainWindow.show());
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
   });
