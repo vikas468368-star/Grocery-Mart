@@ -2112,7 +2112,8 @@ button:disabled { cursor: not-allowed; opacity: 0.58; }
 }
 
 /* Owner accounts expose every navigation section, so use a dedicated second row. */
-.owner-header {
+.owner-header,
+.manager-header {
   height: auto;
   min-height: 108px;
   flex-wrap: wrap;
@@ -2122,20 +2123,24 @@ button:disabled { cursor: not-allowed; opacity: 0.58; }
   padding-bottom: 8px;
 }
 
-.owner-header .pos-header-left {
+.owner-header .pos-header-left,
+.manager-header .pos-header-left {
   display: contents;
 }
 
-.owner-header .pos-brand {
+.owner-header .pos-brand,
+.manager-header .pos-brand {
   order: 1;
 }
 
-.owner-header .pos-header-right {
+.owner-header .pos-header-right,
+.manager-header .pos-header-right {
   order: 2;
   margin-left: auto;
 }
 
-.owner-header .pos-nav {
+.owner-header .pos-nav,
+.manager-header .pos-nav {
   order: 3;
   flex: 1 0 100%;
   justify-content: center;
@@ -2144,15 +2149,18 @@ button:disabled { cursor: not-allowed; opacity: 0.58; }
 }
 
 @media (max-width: 900px) {
-  .owner-header {
+  .owner-header,
+  .manager-header {
     min-height: 142px;
   }
 
-  .owner-header .pos-header-right {
+  .owner-header .pos-header-right,
+  .manager-header .pos-header-right {
     max-width: 100%;
   }
 
-  .owner-header .pos-nav {
+  .owner-header .pos-nav,
+  .manager-header .pos-nav {
     justify-content: flex-start;
   }
 }

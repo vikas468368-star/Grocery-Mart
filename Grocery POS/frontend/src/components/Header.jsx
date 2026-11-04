@@ -53,7 +53,7 @@ export default function Header({ activeTab, setActiveTab }) {
   };
 
   return (
-    <header className={`pos-header ${role === 'Owner' ? 'owner-header' : ''}`}>
+    <header className={`pos-header ${role === 'Owner' ? 'owner-header' : role === 'Manager' ? 'manager-header' : ''}`}>
       <div className="pos-header-left">
         <div className="pos-brand">
           <div className="brand-logo">🛒</div>
